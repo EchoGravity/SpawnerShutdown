@@ -1,0 +1,15 @@
+name: SpawnerShutdown
+version: '${project.version}'
+main: com.agaloth.spawnershutdown.SpawnerShutdown
+api-version: 1.19
+authors: [ Agaloth ]
+description: SpawnerShutdown is a plugin that allows you to easily disable specific spawners from spawning mobs, giving you greater control over the mobs in your server.
+commands:
+  spawnershutdown:
+  ssr:
+  ss:
+
+permissions:
+  spawnershutdown.reload:
+    description: User is able to reload the SpawnerShutdown plugin.
+    default: op
