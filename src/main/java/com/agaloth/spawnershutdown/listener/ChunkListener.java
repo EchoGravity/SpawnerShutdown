@@ -49,11 +49,6 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        this.processChunk(event.getChunk());
-    }
-
-    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
         if (block.getType() == Material.SPAWNER) {
@@ -69,8 +64,6 @@ public class ChunkListener implements Listener {
     public void processChunk(Chunk chunk) {
         HashMap<EntityType, Boolean> blacklistedSpawners = plugin.getBlacklistedSpawners();
         if (blacklistedSpawners != null) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
                     for (BlockState blockState : chunk.getTileEntities()) {
                         if (blockState.getBlock().getType() == Material.SPAWNER) {
                             CreatureSpawner spawner = (CreatureSpawner) blockState;
@@ -88,5 +81,3 @@ public class ChunkListener implements Listener {
                 }
             }
         }
-    }
-}
