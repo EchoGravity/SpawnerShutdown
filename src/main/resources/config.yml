@@ -1,0 +1,18 @@
+# DO NOT TOUCH THIS AT ALL
+version: 1.00
+
+prefix: "<color:dark_red><bold>SPAWNER<color:dark_red> <color:dark_gray>»<color:dark_gray></bold> "
+
+# You can set up the spawners you want to stop from spawning mobs here. When a player loads a chunk, it will delete those spawners. If any players have spawners in their inventory and try to place them, they won't be able to do it.
+# Here is a list of mobs that can be added to the blacklist: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+spawner-blacklist:
+  - 'GIANT'
+
+# You can modify the message that players will get when trying to place a blacklisted spawner.
+blacklisted-block-player-message: '<color:red>You cannot place this spawner because it is blacklisted.<color:red>'
+
+# You can modify the message that the plugin will give when reloaded.
+plugin-reload-message: '<color:green>The config file has been reloaded.<color:green>'
+
+# You can modify the message that the plugin will give when a player doesn't have the permission to reload the plugin.
+permission-message: '<color:red>You do not have permission to use this command.<color:red>'
