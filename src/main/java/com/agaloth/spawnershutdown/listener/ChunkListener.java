@@ -53,10 +53,11 @@ public class ChunkListener implements Listener {
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 spawner.setSpawnedType(creatureSpawner.getSpawnedType());
                 spawner.update();
-                plugin.getBlacklistedSpawners().containsKey(spawner.getSpawnedType());
-                event.setCancelled(true);
-                var blacklisted = minimessage.deserialize(Objects.requireNonNull(this.plugin.getConfig().getString("prefix")) + this.plugin.getConfig().getString("blacklisted-block-player-message"));
-                event.getPlayer().sendMessage(blacklisted);
+                if (plugin.getBlacklistedSpawners().containsKey(spawner.getSpawnedType())) {
+                    event.setCancelled(true);
+                    var blacklisted = minimessage.deserialize(Objects.requireNonNull(this.plugin.getConfig().getString("prefix")) + this.plugin.getConfig().getString("blacklisted-block-player-message"));
+                    event.getPlayer().sendMessage(blacklisted);
+                }
             }
         }
 
