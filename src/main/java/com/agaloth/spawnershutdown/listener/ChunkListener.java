@@ -20,6 +20,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -51,33 +53,37 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
-        if (block.getType() == Material.SPAWNER) {
-            CreatureSpawner spawner = (CreatureSpawner) block.getState();
-            if (plugin.getBlacklistedSpawners().containsKey(spawner.getSpawnedType())) {
+        ItemStack itemInHand = event.getItemInHand();
+            if (itemInHand.getType() == Material.SPAWNER) {
+                BlockStateMeta blockStateMeta = (BlockStateMeta) itemInHand.getItemMeta();
+                CreatureSpawner creatureSpawner = (CreatureSpawner) blockStateMeta.getBlockState();
+                CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                spawner.setSpawnedType(creatureSpawner.getSpawnedType());
+                spawner.update();
+                plugin.getBlacklistedSpawners().containsKey(spawner.getSpawnedType());
                 event.setCancelled(true);
                 var blacklisted = minimessage.deserialize(Objects.requireNonNull(this.plugin.getConfig().getString("prefix")) + this.plugin.getConfig().getString("blacklisted-block-player-message"));
                 event.getPlayer().sendMessage(blacklisted);
             }
         }
-    }
 
     public void processChunk(Chunk chunk) {
         HashMap<EntityType, Boolean> blacklistedSpawners = plugin.getBlacklistedSpawners();
         if (blacklistedSpawners != null) {
-                    for (BlockState blockState : chunk.getTileEntities()) {
-                        if (blockState.getBlock().getType() == Material.SPAWNER) {
-                            CreatureSpawner spawner = (CreatureSpawner) blockState;
-                            if (blacklistedSpawners.containsKey(spawner.getSpawnedType()) && blacklistedSpawners.get(spawner.getSpawnedType())) {
-                                spawner.getBlock().setType(Material.AIR);
-                                spawner.setDelay(1);
-                                spawner.setMinSpawnDelay(1);
-                                spawner.setMaxSpawnDelay(2);
-                                spawner.setSpawnCount(0);
-                                spawner.setMaxNearbyEntities(0);
-                                spawner.setRequiredPlayerRange(0);
-                            }
-                        }
+            for (BlockState blockState : chunk.getTileEntities()) {
+                if (blockState.getBlock().getType() == Material.SPAWNER) {
+                    CreatureSpawner spawner = (CreatureSpawner) blockState;
+                    if (blacklistedSpawners.containsKey(spawner.getSpawnedType()) && blacklistedSpawners.get(spawner.getSpawnedType())) {
+                        spawner.getBlock().setType(Material.AIR);
+                        spawner.setDelay(1);
+                        spawner.setMinSpawnDelay(1);
+                        spawner.setMaxSpawnDelay(2);
+                        spawner.setSpawnCount(0);
+                        spawner.setMaxNearbyEntities(0);
+                        spawner.setRequiredPlayerRange(0);
                     }
                 }
             }
         }
+    }
+}
