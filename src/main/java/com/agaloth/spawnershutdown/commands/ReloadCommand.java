@@ -62,9 +62,15 @@ public class ReloadCommand implements CommandExecutor {
                 if (!sender.hasPermission("spawnershutdown.reload")) {
                     sendPermissionMessage(sender);
                     return true;
-                }
-                reloadBlacklist();
-                sendReloadMessage(sender);
+                } else if(sender.hasPermission("spawnershutdown.reload")) {
+                    if (args.length == 1) {
+                        if(args[0].equalsIgnoreCase("reload")) {
+                            reloadBlacklist();
+                            sendReloadMessage(sender);
+                        }
+
+                    }
+            }
                 return true;
             default:
                 return false;
