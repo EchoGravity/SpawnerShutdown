@@ -66,18 +66,15 @@ public class ChunkListener implements Listener {
         if (blacklistedSpawners != null) {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (blockState.getBlock().getType() == Material.SPAWNER) {
-                    CreatureSpawner spawner = (CreatureSpawner) blockState;
+                     CreatureSpawner spawner = (CreatureSpawner) blockState;
                     if (blacklistedSpawners.containsKey(spawner.getSpawnedType()) && blacklistedSpawners.get(spawner.getSpawnedType())) {
-                        spawner.getBlock().setType(Material.AIR);
-                        spawner.setDelay(1);
-                        spawner.setMinSpawnDelay(1);
-                        spawner.setMaxSpawnDelay(2);
-                        spawner.setSpawnCount(0);
-                        spawner.setMaxNearbyEntities(0);
-                        spawner.setRequiredPlayerRange(0);
+                        spawner.setSpawnedType(EntityType.ZOMBIE); 
+                        spawner.update();
                     }
                 }
             }
         }
     }
 }
+    
+   
